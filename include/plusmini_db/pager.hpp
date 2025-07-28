@@ -1,31 +1,29 @@
 #ifndef PLUSMINI_DB_PAGER_HPP
 #define PLUSMINI_DB_PAGER_HPP
 
+#include "types.hpp"
 #include <fstream>
 #include <cstddef>
-#include <vector>
+#include <unordered_map>
 #include <memory>
-
 
 
 class Pager {
     public:
         Pager(const std::string& filename);
+        ~Pager();
 
+        void loadPage(u_long page_number);
+    
         //Getters and Setters
-        unsigned long getFileLenght();
+        u_long getFileLenght();
+        RawMemory::Pointer& getPage();
     private:
         std::fstream stream_file;
         size_t file_lenght; 
-        unsigned long number_pages;
+        u_long number_pages;
 
-        struct FreeDeleter {
-        void operator()(void* ptr) const {
-            std::free(ptr);
-        }
-        };
-    
-        std::vector<std::unique_ptr<void, FreeDeleter>> pages;
+        std::unordered_map<u_long, RawMemory::Pointer> pages;
 
 };
 
