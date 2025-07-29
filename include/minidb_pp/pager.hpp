@@ -1,7 +1,7 @@
 #ifndef PLUSMINI_DB_PAGER_HPP
 #define PLUSMINI_DB_PAGER_HPP
 
-#include "types.hpp"
+#include "minidb_pp/types.hpp"
 #include <fstream>
 #include <cstddef>
 #include <unordered_map>
