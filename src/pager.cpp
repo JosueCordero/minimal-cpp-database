@@ -100,6 +100,32 @@ void Pager::addPage(){
               
 }
 
+void Pager::flushPage(ulong page_number){
+    if(pages.find(page_number) == pages.end()){
+        std::ostringstream oss;
+        oss << "[Pager::flushPage] Page Number " << page_number 
+        << " is not in the program memory" << std::endl;
+        throw PagError::page_out_of_range(oss.str());
+    }
+
+    if(stream_file.good()){
+        stream_file.seekp(page_number*DBConfig::PAGE_SIZE,std::ios::beg);
+        if(stream_file.fail()){
+            throw std::runtime_error("Fail to seek the write position");
+        }
+
+        stream_file.write(reinterpret_cast<char*>(pages[page_number].get()),DBConfig::PAGE_SIZE);
+        if(!stream_file.good()){
+            throw std::runtime_error("Fail to write to the file");
+        }
+        stream_file.flush();
+    }else{
+        throw std::runtime_error("Stream Integrity Compromized");
+
+    }
+}
+
+
 
 u_long Pager::getFileLenght(){
     return file_lenght;

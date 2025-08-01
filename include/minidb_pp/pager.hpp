@@ -17,6 +17,7 @@ class Pager {
 
         void loadPage(u_long page_number);
         void addPage();
+        void flushPage(u_long page_number);
 
         //Getters and Setters
         u_long getFileLenght();
