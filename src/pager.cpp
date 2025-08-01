@@ -72,5 +72,8 @@ u_long Pager::getFileLenght(){
     return file_lenght;
 }
 
+void* Pager::getPage(u_long page_number){
+    return pages[page_number].get();
+}
 
 

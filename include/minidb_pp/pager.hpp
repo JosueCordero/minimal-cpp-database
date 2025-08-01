@@ -19,7 +19,7 @@ class Pager {
     
         //Getters and Setters
         u_long getFileLenght();
-        RawMemory::Pointer& getPage();
+        void* getPage(u_long page_number);
     private:
         std::fstream stream_file;
         size_t file_lenght; 
