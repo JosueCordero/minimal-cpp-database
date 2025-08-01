@@ -16,7 +16,7 @@ Pager::Pager(const std::string& filename){
         stream_file.open(filename, std::ios::out);
         stream_file.close();
 
-        stream_file.open(filename, std::ios::in | std::ios::out);
+        stream_file.open(filename, std::ios::in | std::ios::out | std::ios::binary);
         if(!stream_file.is_open()){
             throw std::runtime_error("Fail to open the file");
         }
@@ -42,24 +42,25 @@ Pager::~Pager(){
 void Pager::loadPage(u_long page_number){
     if(stream_file.good()){
 
-        if(page_number >= number_pages && page_number < 0){
+        if(page_number >= number_pages || page_number < 0){
             std::ostringstream oss;
             oss << "[Pager::loadPage] Page Number " << page_number 
-            << " is out of range. Max page number is " << number_pages
-            << " and Min number is 0";
-            throw std::out_of_range(oss.str());
+            << " is out of range. Number of pages: " << number_pages
+            << " Starting to count from page 0" << std::endl;
+            throw PagError::page_out_of_range(oss.str());
         }
     
         if(pages.find(page_number) == pages.end()){
             pages[page_number] = RawMemory::Pointer(std::malloc(DBConfig::PAGE_SIZE));
+            
+            stream_file.seekg(page_number*DBConfig::PAGE_SIZE,std::ios::beg);
+        
+            stream_file.read(reinterpret_cast<char*>(pages[page_number].get()),DBConfig::PAGE_SIZE);
+            if(!stream_file.good()){
+                throw std::runtime_error("Fail to read the file");
+            }
         }
     
-        stream_file.seekg(page_number*DBConfig::PAGE_SIZE,std::ios::beg);
-    
-        stream_file.read(reinterpret_cast<char*>(pages[page_number].get()),DBConfig::PAGE_SIZE);
-        if(!stream_file.good()){
-            throw std::runtime_error("Fail to read the file");
-        }
         
     }else{
         throw std::runtime_error("Stream Integrity Compromized");
