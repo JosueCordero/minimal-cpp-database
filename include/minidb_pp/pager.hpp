@@ -16,7 +16,8 @@ class Pager {
         ~Pager();
 
         void loadPage(u_long page_number);
-    
+        void addPage();
+
         //Getters and Setters
         u_long getFileLenght();
         void* getPage(u_long page_number);

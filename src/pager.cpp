@@ -68,6 +68,39 @@ void Pager::loadPage(u_long page_number){
     
 }
 
+void Pager::addPage(){
+    if(stream_file.good()){
+        stream_file.seekp(0,std::ios::end);  
+        std::streampos pos = stream_file.tellp();
+        if(pos == std::streampos(-1)){
+            throw std::runtime_error("[Pager::addPage] Failed to get position with tellp()");
+        }
+        size_t new_file_lenght = static_cast<size_t>(pos) + DBConfig::PAGE_SIZE;
+        
+        if(new_file_lenght % DBConfig::PAGE_SIZE != 0){
+            throw std::runtime_error(
+                "DB is corrupt, the size of the file is not a multiple of the page size");
+        }
+        else{
+            pages[number_pages] = RawMemory::Pointer(
+                RawMemory::callocPage(DBConfig::PAGE_SIZE)
+            );
+            stream_file.write(reinterpret_cast<char*>(pages[number_pages].get()),DBConfig::PAGE_SIZE);
+            if(!stream_file.good()){
+                throw std::runtime_error("Fail to write to the file");
+            }
+            stream_file.flush();
+            file_lenght = new_file_lenght;
+            number_pages++;
+
+        }
+    }else{
+        throw std::runtime_error("Stream Integrity Compromized");
+    }
+              
+}
+
+
 u_long Pager::getFileLenght(){
     return file_lenght;
 }
