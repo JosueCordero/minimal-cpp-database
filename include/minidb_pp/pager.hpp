@@ -6,6 +6,8 @@
 #include <cstddef>
 #include <unordered_map>
 #include <memory>
+#include <exception>
+#include <string>
 
 
 class Pager {
@@ -26,5 +28,20 @@ class Pager {
         std::unordered_map<u_long, RawMemory::Pointer> pages;
 
 };
+
+namespace PagError {
+
+    class page_out_of_range : public std::exception {
+        private:
+            std::string message;
+        public:
+            page_out_of_range(const std::string& filename)
+            : message("Failed to read file" + filename) {} 
+            
+            const char* what() const noexcept override {
+                return message.c_str();
+            }  
+    };
+}
 
 #endif
