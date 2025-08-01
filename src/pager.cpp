@@ -51,7 +51,7 @@ void Pager::loadPage(u_long page_number){
         }
     
         if(pages.find(page_number) == pages.end()){
-            pages[page_number] = RawMemory::Pointer(std::malloc(DBConfig::PAGE_SIZE));
+            pages[page_number] = RawMemory::Pointer(RawMemory::mallocPage(DBConfig::PAGE_SIZE));
             
             stream_file.seekg(page_number*DBConfig::PAGE_SIZE,std::ios::beg);
         
