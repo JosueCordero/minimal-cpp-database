@@ -22,21 +22,28 @@ if(TEST)
     FetchContent_MakeAvailable(googletest)
 endif()
 
-add_library(internals 
+add_library(db_internals 
     src/pager.cpp
 )
 
-target_include_directories(internals PUBLIC ${CMAKE_SOURCE_DIR}/include)
+add_library(cli_internals
+    src/buffer.cpp
+)
+
+target_include_directories(db_internals PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(cli_internals PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 add_executable(prod cli/CLI.cpp)
-target_link_libraries(prod PRIVATE internals)
+target_link_libraries(prod PRIVATE db_internals)
+target_link_libraries(prod PRIVATE cli_internals)
 set_target_properties(prod PROPERTIES OUTPUT_NAME CLI_${PROJECT_NAME})
 
 
 if(EXISTS "${MY_TEST_FOLDER}/main.cpp" AND CMAKE_BINARY_DIR STREQUAL MY_TEST_FOLDER)
 
 add_executable(test playground/main.cpp)
-target_link_libraries(test PRIVATE internals)
+target_link_libraries(test PRIVATE db_internals)
+target_link_libraries(test PRIVATE cli_internals)
 set_target_properties(test PROPERTIES OUTPUT_NAME test_${PROJECT_NAME})
 
 endif()
