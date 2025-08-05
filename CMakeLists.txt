@@ -36,7 +36,7 @@ target_include_directories(cli_internals PUBLIC ${CMAKE_SOURCE_DIR}/include)
 add_executable(prod cli/CLI.cpp)
 target_link_libraries(prod PRIVATE db_internals)
 target_link_libraries(prod PRIVATE cli_internals)
-set_target_properties(prod PROPERTIES OUTPUT_NAME CLI_${PROJECT_NAME})
+set_target_properties(prod PROPERTIES OUTPUT_NAME miniCLI)
 
 
 if(EXISTS "${MY_TEST_FOLDER}/main.cpp" AND CMAKE_BINARY_DIR STREQUAL MY_TEST_FOLDER)
