@@ -34,7 +34,6 @@ Pager::Pager(const std::string& filename){
 
 Pager::~Pager(){
     if(stream_file.is_open()){
-        std::cout << "closing stream" << std::endl;
         stream_file.close();
     }
 }
