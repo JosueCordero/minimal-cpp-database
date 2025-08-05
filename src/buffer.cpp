@@ -11,6 +11,13 @@ bool InputBuffer::readInput(){
     return true;   
 }
 
+bool InputBuffer::readInput(std::string& external_buffer){
+    if(!std::getline(std::cin, external_buffer)){
+        return false;
+    } 
+    return true;   
+}
+
 const std::string& InputBuffer::getBuffer() const {
     return buffer;
 }

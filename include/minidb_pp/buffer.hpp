@@ -8,6 +8,7 @@ class InputBuffer {
     public:
         InputBuffer() = default;
         bool readInput();
+        static bool readInput(std::string& external_buffer);
 
         const std::string& getBuffer() const;
 
