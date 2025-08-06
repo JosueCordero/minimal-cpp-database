@@ -10,7 +10,7 @@ Expect frequent updates and possible breaking changes!</p>
 
 # MinimalDB
 
-A minimal, educational database written in modern C++ for learning purposes.
+A minimal, educational database written in modern C++ for learning purposes. Inspired by [simple-db-in-c](https://github.com/rosedblabs/simple-db-in-c) from rosedblabs.
 
 ## ✨Features
 
